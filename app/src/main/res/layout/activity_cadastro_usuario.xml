@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradiente_drawable"
+    tools:context=".CadastroUsuario">
+
+    <EditText
+        android:id="@+id/cadastro_pin"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/edit_text_drawable"
+        android:ems="10"
+        android:hint="Pin"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/cadastro_edt_login"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/edit_text_drawable"
+        android:ems="10"
+        android:hint="Login"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/cadastro_pin"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/cadastro_pin"
+        app:layout_constraintTop_toBottomOf="@+id/cadastro_pin" />
+
+    <EditText
+        android:id="@+id/login_edt_senha"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/edit_text_drawable"
+        android:ems="10"
+        android:hint="Senha"
+        android:inputType="textPassword"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/cadastro_edt_login"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/cadastro_edt_login"
+        app:layout_constraintTop_toBottomOf="@+id/cadastro_edt_login" />
+
+    <EditText
+        android:id="@+id/cadastro_confirma_senha"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/edit_text_drawable"
+        android:ems="10"
+        android:hint="Confirmar senha"
+        android:inputType="textPassword"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/login_edt_senha"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/login_edt_senha"
+        app:layout_constraintTop_toBottomOf="@+id/login_edt_senha" />
+
+    <EditText
+        android:id="@+id/cadastro_email"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/edit_text_drawable"
+        android:ems="10"
+        android:hint="E-mail"
+        android:inputType="textPersonName"
+        android:paddingLeft="10dp"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/cadastro_confirma_senha"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/login_edt_senha"
+        app:layout_constraintTop_toBottomOf="@+id/cadastro_confirma_senha" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cadastro_btn_cadastrar"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/main_btn_drawable"
+        android:text="CADASTRAR"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/cadastro_email"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/cadastro_email"
+        app:layout_constraintTop_toBottomOf="@+id/cadastro_email" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
