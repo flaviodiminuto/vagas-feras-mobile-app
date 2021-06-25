@@ -9,12 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Login">
-        <activity android:name=".DetalheVaga"></activity>
-        <activity android:name=".FormularioVaga" />
-        <activity android:name=".PainelVagas" />
-        <activity android:name=".Home" />
-        <activity android:name=".CadastroUsuario" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".DetalheVaga"
+            android:screenOrientation="portrait" />
+        <activity android:name=".FormularioVaga"
+            android:screenOrientation="portrait" />
+        <activity android:name=".PainelVagas"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Home"
+            android:screenOrientation="portrait" />
+        <activity android:name=".CadastroUsuario"
+            android:screenOrientation="portrait" />
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
