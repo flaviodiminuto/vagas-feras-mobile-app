@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Login</string>
+    <string name="app_name">Vagas Feras</string>
+    <string-array name="areas">
+        <item>Tecnologia</item>
+        <item>Gestão</item>
+    </string-array>
 </resources>

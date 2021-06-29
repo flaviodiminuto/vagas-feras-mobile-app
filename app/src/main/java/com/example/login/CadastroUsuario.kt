@@ -1,11 +1,13 @@
 package com.example.login
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import contratos.Inscrito
+import http.Response
 import model.Usuario
 import service.UsuarioService
 
@@ -50,6 +52,12 @@ class CadastroUsuario : AppCompatActivity(), Inscrito {
     }
 
     override fun evento(response: String) {
-        Toast.makeText(this, response, Toast.LENGTH_LONG).show()
+        if(!response.isBlank()) {
+            Toast.makeText(this, response, Toast.LENGTH_LONG).show()
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }else{
+            Toast.makeText(this, "Não foi possível realizar o cadastro no momento", Toast.LENGTH_LONG).show()
+        }
     }
 }

@@ -100,5 +100,14 @@
         app:layout_constraintStart_toStartOf="@+id/cadastro_email"
         app:layout_constraintTop_toBottomOf="@+id/cadastro_email" />
 
+    <ImageView
+        android:id="@+id/imageView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/cadastro_pin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@mipmap/fundo_transparente_foreground" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

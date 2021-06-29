@@ -13,22 +13,24 @@ import com.android.volley.toolbox.Volley;
 
 import java.io.UnsupportedEncodingException;
 
+import contratos.Inscrito;
+
 public class HttpRequestQueue {
 
-    public static boolean send(RequestGet requestGet){
+    public static boolean send(RequestGet request){
 
-        RequestQueue queue = Volley.newRequestQueue(requestGet.getContext());
+        RequestQueue queue = Volley.newRequestQueue(request.getContext());
         StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.GET,
-                requestGet.getUri(), requestGet::finish,
+                request.getUri(), request::finish,
                 Throwable::printStackTrace);
         queue.add(stringRequest);
         return true;
     }
 
-    public static boolean send(RequestPost requestPost){
-        RequestQueue queue = Volley.newRequestQueue(requestPost.getContext());
+    public static boolean send(RequestPost request){
+        RequestQueue queue = Volley.newRequestQueue(request.getContext());
         StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,
-                requestPost.getUri(), requestPost::finish,
+                request.getUri(), request::finish,
                 Throwable::printStackTrace) {
             @Override
             public String getBodyContentType() {
@@ -39,26 +41,16 @@ public class HttpRequestQueue {
             public byte[] getBody() throws AuthFailureError {
                 String body = "";
                 try {
-                     body = requestPost.requestBody();
+                     body = request.requestBody();
                     return body == null ? null : body.getBytes("utf-8");
                 } catch (UnsupportedEncodingException uee) {
                     VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", body, "utf-8");
                     return null;
                 }
             }
-//            @Override
-//            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-//                String responseString = "";
-//                if (response != null) {
-//                    responseString = String.valueOf(response.statusCode);
-//                    // can get more details such as response.headers
-//                }
-//                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-//            }
 
         };
         queue.add(stringRequest);
         return true;
     }
-
 }

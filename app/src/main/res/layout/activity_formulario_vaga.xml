@@ -58,12 +58,12 @@
 
             <EditText
                 android:id="@+id/form_edt_palavra"
+                style="@style/edittext_padrao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:hint="palavra chave"
-                android:background="@color/white"/>
+                android:hint="palavra chave"/>
 
             <TextView
                 android:id="@+id/form_txt_codigo"
@@ -77,12 +77,12 @@
 
             <EditText
                 android:id="@+id/form_edt_codigo"
+                style="@style/edittext_padrao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:hint="Pesquisa pelo código"
-                android:background="@color/white"/>
+                android:hint="Pesquisa pelo código"/>
 
             <TextView
                 android:id="@+id/form_txt_descricao"
@@ -96,6 +96,7 @@
 
             <EditText
                 android:id="@+id/editTextTextMultiLine"
+                style="@style/edittext_padrao"
                 android:layout_width="match_parent"
                 android:layout_height="127dp"
                 android:background="@color/white"
@@ -113,14 +114,13 @@
                 android:textStyle="bold"
                 android:text="Área" />
 
-            <EditText
-                android:id="@+id/form_edt_area"
+            <Spinner
+                android:id="@+id/form_vaga_spinner_area"
+                style="@style/edittext_padrao"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Selecionar área"
-                android:background="@color/white"/>
+                android:inputType="text" />
 
             <TextView
                 android:id="@+id/form_txt_segmento"
@@ -132,14 +132,13 @@
                 android:textStyle="bold"
                 android:text="Segmento" />
 
-            <EditText
-                android:id="@+id/form_edt_segmento"
+            <Spinner
+                android:id="@+id/form_vaga_spinner_segmento"
+                style="@style/edittext_padrao"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Selecionar segmento"
-                android:background="@color/white"/>
+                android:inputType="text"/>
 
             <TextView
                 android:id="@+id/form_txt_experiencia"
@@ -153,12 +152,12 @@
 
             <EditText
                 android:id="@+id/form_edt_experiencia"
+                style="@style/edittext_padrao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:hint="Selecionar nível"
-                android:background="@color/white"/>
+                android:hint="Selecionar nível"/>
 
             <TextView
                 android:id="@+id/form_txt_remuneracao_minima"
@@ -172,12 +171,13 @@
 
             <EditText
                 android:id="@+id/form_edt_remuneracao_minima"
+                style="@style/edittext_padrao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:inputType="numberDecimal"
                 android:hint="00,00"
-                android:background="@color/white"/>
+                />
 
             <TextView
                 android:id="@+id/form_txt_remuneracao_maxima"
@@ -191,12 +191,13 @@
 
             <EditText
                 android:id="@+id/form_edt_remuneracao_maxima"
+                style="@style/edittext_padrao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:inputType="numberDecimal"
                 android:hint="00,00"
-                android:background="@color/white"/>
+                />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -227,12 +228,13 @@
 
                     <EditText
                         android:id="@+id/form_edt_skill_requerida"
+                        style="@style/edittext_padrao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
                         android:ems="10"
                         android:inputType="textPersonName"
-                        android:background="@color/white"/>
+                        />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/form_vaga_btn_adicionar_skl_requerida"
@@ -277,14 +279,16 @@
                         android:layout_marginTop="10dp"
                         android:text="Skills Desejáveis"
                         android:textColor="@color/card_titulo"
-                        android:textStyle="bold" /><EditText
-                    android:id="@+id/form_edt_skill_desejada"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:background="@color/white"/>
+                        android:textStyle="bold" />
+                    <EditText
+                        android:id="@+id/form_edt_skill_desejada"
+                        style="@style/edittext_padrao"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/form_vaga_btn_adicionar_skl_desejavel"

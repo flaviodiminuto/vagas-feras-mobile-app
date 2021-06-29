@@ -5,7 +5,10 @@ import androidx.annotation.NonNull;
 public enum Rota {
     VAGAS("/vagas"),
     USUARIOS("/usuarios"),
-    USUARIO_LOGIN("/usuarios/login");
+    USUARIO_LOGIN("/usuarios/login"),
+    AREAS("/areas"),
+    SEGMENTOS("/segmentos"),
+    SEGMENTOS_POR_AREA("/segmento/area/%s");
 
     private final String rota;
 

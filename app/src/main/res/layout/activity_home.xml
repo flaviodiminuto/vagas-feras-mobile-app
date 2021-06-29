@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/home_card_cadastrar_vaga"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -47,7 +47,7 @@
             android:id="@+id/home_txt_candidaturas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Candidatura"
+            android:text="Candidaturas"
             android:textColor="@color/card_titulo"
             android:textSize="20dp"
             android:textStyle="bold"
@@ -65,7 +65,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
+        android:id="@+id/home_card_painel_vaga"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -76,7 +76,7 @@
         app:layout_constraintHeight_min="150dp"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView">
+        app:layout_constraintTop_toBottomOf="@+id/home_card_cadastrar_vaga">
 
         <ImageView
             android:id="@+id/home_img_painel_vagas"
@@ -115,7 +115,7 @@
         app:layout_constraintHeight_min="150dp"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2">
+        app:layout_constraintTop_toBottomOf="@+id/home_card_painel_vaga">
 
         <ImageView
             android:id="@+id/home_img_perfil"
