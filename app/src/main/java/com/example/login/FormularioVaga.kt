@@ -5,27 +5,33 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import contratos.Inscrito
-import model.Area
-import model.Nivel
-import model.Segmento
+import model.*
 import service.AreaService
 import service.SegmentoService
+import service.SkillService
 
 class FormularioVaga : AppCompatActivity(){
     //Services
     private lateinit var areaService: AreaService
 
-    lateinit var txt_descricao: EditText
-
+    lateinit var vaga: Vaga
     lateinit var areaSelecionada: Area
     lateinit var nivelSelecionado: Nivel
     lateinit var segmentoSelecionado: Segmento
+    var skillsRequeridasList: List<Skill> = mutableListOf()
+    var skillsDesejadasList: List<Skill> = mutableListOf()
 
+    lateinit var txt_descricao: EditText
     lateinit var spinnerArea: Spinner
     lateinit var spinnerSegmento: Spinner
     lateinit var spinnerNivel: Spinner
+    lateinit var skillRequeridaAutoComplete: AutoCompleteTextView
+    lateinit var skillDesejadaAutoComplete: AutoCompleteTextView
+    lateinit var skillRequeridaRecycler: RecyclerView //todo - configurar preenchimento
+    lateinit var skillDesejadaRecycler: RecyclerView //todo - configurar preenchimento
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,20 +39,29 @@ class FormularioVaga : AppCompatActivity(){
         spinnerArea = findViewById(R.id.form_vaga_spinner_area)
         spinnerSegmento = findViewById(R.id.form_vaga_spinner_segmento)
         spinnerNivel = findViewById(R.id.form_spn_experiencia)
+        skillRequeridaAutoComplete = findViewById(R.id.form_edt_skill_requerida)
+        skillDesejadaAutoComplete = findViewById(R.id.form_edt_skill_desejada)
 
         areaSelecionada = Area(0, "Carregando", "")
         nivelSelecionado = Nivel(0, "Estagio")
         segmentoSelecionado = Segmento(0, areaSelecionada, "Carregando", "")
 
+
         this.areaService = AreaService(this)
 
-        val divulgar = true
-
-        if(divulgar)
+        //todo - o id da vaga seja null
+        if(true) {
             prepararParaDivulgar()
-        else
+            vaga = Vaga.Builder()
+                    .area(areaSelecionada)
+                    .segmento(segmentoSelecionado)
+                    .nivel(nivelSelecionado)
+                    .desejaveis(skillsRequeridasList)
+                    .desejaveis(skillsDesejadasList)
+                    .build()
+        } else {
             prepararParaConsultar()
-
+        }
     }
 
     private fun prepararParaConsultar() {
@@ -56,7 +71,6 @@ class FormularioVaga : AppCompatActivity(){
     }
 
     private fun prepararParaDivulgar() {
-        //  todo - Configurar edt segmento para buscar segmentos quando a area for selecionada
         val areaHandler = AreaHandler(spinnerArea, areaSelecionada, this)
         areaService.findAreas(areaHandler)
 
@@ -66,7 +80,9 @@ class FormularioVaga : AppCompatActivity(){
         areaHandler.setSegmentoHadler(segmentoHandler)
 
         val nivelHandler = NivelHandler(spinnerNivel, this.nivelSelecionado,this)
-        nivelHandler.setNivelAdapter()
+        val skillRequeridaHandler = SkillHandler(skillsRequeridasList, skillRequeridaAutoComplete, this)
+        val skillDesejadaHandler = SkillHandler(skillsDesejadasList, skillDesejadaAutoComplete, this)
+
 
     }
 
@@ -74,6 +90,9 @@ class FormularioVaga : AppCompatActivity(){
                        private var nivelSelecionado: Nivel,
                        private var context: Context): AdapterView.OnItemSelectedListener{
 
+        init {
+            setNivelAdapter()
+        }
         fun setNivelAdapter() {
             ArrayAdapter.createFromResource(
                     this.context,
@@ -86,7 +105,6 @@ class FormularioVaga : AppCompatActivity(){
         }
 
         override fun onNothingSelected(parent: AdapterView<*>?) {
-            TODO("Not yet implemented")
         }
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -125,7 +143,6 @@ class FormularioVaga : AppCompatActivity(){
             segmentHandler.find(areaSelecionada.id)
         }
         override fun evento(response: String?) {
-            Toast.makeText(this.context, response, Toast.LENGTH_LONG).show()
             var list = Gson().fromJson(response,Array<Area>::class.java).toList()
             val array = ArrayList<String>()
             for (aera in list){
@@ -180,7 +197,7 @@ class FormularioVaga : AppCompatActivity(){
         }
 
         override fun onNothingSelected(parent: AdapterView<*>?) {
-            TODO("Not yet implemented")
+            this.segmentoSelecionado = Segmento(null, Area(), "Segmento" , "")
         }
 
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -189,6 +206,40 @@ class FormularioVaga : AppCompatActivity(){
 
         fun find(id: Long) {
             segmentoService.find(this, id)
+        }
+    }
+
+    class SkillHandler(private var skillList: List<Skill>,
+                       private var autoCompleteTextView: AutoCompleteTextView,
+                       private var context: Context): Inscrito {
+        var skillStringList : List<String> = mutableListOf()
+        val skillService = SkillService(context)
+
+        init {
+            skillService.find(this)
+            setAdapter()
+        }
+        private fun map(){
+            skillStringList = skillList.map { skill -> skill.nome }
+        }
+        private fun setAdapter(){
+            map()
+            ArrayAdapter<String>(context, R.layout.support_simple_spinner_dropdown_item, skillStringList)
+                    .also { arrayAdapter ->
+                        autoCompleteTextView.setAdapter(arrayAdapter)
+                    }
+        }
+
+        override fun evento(response: String?) {
+            this.skillList = Gson().fromJson(response, Array<Skill>::class.java).toList()
+            setAdapter()
+        }
+
+        fun adicionarSkill() {
+            val skillSelecionada = skillService.byName(skillList, autoCompleteTextView.text.toString())
+            if(skillSelecionada != null){
+                //todo - Adicionar a skill selecionada na vaga
+            }
         }
     }
 }

@@ -38,7 +38,7 @@ class CadastroUsuario : AppCompatActivity(), Inscrito {
             val confirmarSenha = txt_confirmar_senha.text.toString()
             val email = txt_email.text.toString()
 
-            if ( !senha.equals(confirmarSenha)) {
+            if (senha != confirmarSenha) {
                 Toast.makeText(this,
                         "Senha e confirmação são diferentes"
                         , Toast.LENGTH_LONG).show()
@@ -53,7 +53,7 @@ class CadastroUsuario : AppCompatActivity(), Inscrito {
 
     override fun evento(response: String) {
         if(!response.isBlank()) {
-            Toast.makeText(this, response, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show()
             intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }else{
