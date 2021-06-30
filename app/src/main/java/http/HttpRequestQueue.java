@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import contratos.Inscrito;
 
@@ -31,22 +32,18 @@ public class HttpRequestQueue {
         RequestQueue queue = Volley.newRequestQueue(request.getContext());
         StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,
                 request.getUri(), request::finish,
-                Throwable::printStackTrace) {
+                Throwable::printStackTrace)
+        {
             @Override
             public String getBodyContentType() {
-                return "application/json; charset=utf-8";
+                return "application/json; charset=UTF-8";
             }
 
             @Override
             public byte[] getBody() throws AuthFailureError {
                 String body = "";
-                try {
-                     body = request.requestBody();
-                    return body == null ? null : body.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", body, "utf-8");
-                    return null;
-                }
+                body = request.requestBody();
+                return body == null ? null : body.getBytes(StandardCharsets.UTF_8);
             }
 
         };

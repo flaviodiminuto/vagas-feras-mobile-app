@@ -4,4 +4,12 @@
         <item>Tecnologia</item>
         <item>Gestão</item>
     </string-array>
+    <string-array name="niveis_experiencia">
+        <item>Estagiario</item>
+        <item>Trainee</item>
+        <item>Junior</item>
+        <item>Pleno</item>
+        <item>Senior</item>
+        <item>Especialista</item>
+    </string-array>
 </resources>

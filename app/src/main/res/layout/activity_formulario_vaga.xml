@@ -47,44 +47,6 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/form_txt_palavra"
-                android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:textColor="@color/card_titulo"
-                android:textStyle="bold"
-                android:text="Palavra Chave" />
-
-            <EditText
-                android:id="@+id/form_edt_palavra"
-                style="@style/edittext_padrao"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="palavra chave"/>
-
-            <TextView
-                android:id="@+id/form_txt_codigo"
-                android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:textColor="@color/card_titulo"
-                android:textStyle="bold"
-                android:text="Código" />
-
-            <EditText
-                android:id="@+id/form_edt_codigo"
-                style="@style/edittext_padrao"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Pesquisa pelo código"/>
-
-            <TextView
                 android:id="@+id/form_txt_descricao"
                 android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
@@ -99,8 +61,8 @@
                 style="@style/edittext_padrao"
                 android:layout_width="match_parent"
                 android:layout_height="127dp"
-                android:background="@color/white"
                 android:ems="10"
+                android:textColor="@color/white"
                 android:gravity="start|top"
                 android:inputType="textMultiLine" />
 
@@ -119,8 +81,7 @@
                 style="@style/edittext_padrao"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:ems="10"
-                android:inputType="text" />
+                android:ems="10"/>
 
             <TextView
                 android:id="@+id/form_txt_segmento"
@@ -137,8 +98,7 @@
                 style="@style/edittext_padrao"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:ems="10"
-                android:inputType="text"/>
+                android:ems="10"/>
 
             <TextView
                 android:id="@+id/form_txt_experiencia"
@@ -150,14 +110,12 @@
                 android:textStyle="bold"
                 android:text="Nível de Experiência" />
 
-            <EditText
-                android:id="@+id/form_edt_experiencia"
+            <Spinner
+                android:id="@+id/form_spn_experiencia"
                 style="@style/edittext_padrao"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="Selecionar nível"/>
+                android:layout_height="30dp"
+                android:ems="10" />
 
             <TextView
                 android:id="@+id/form_txt_remuneracao_minima"

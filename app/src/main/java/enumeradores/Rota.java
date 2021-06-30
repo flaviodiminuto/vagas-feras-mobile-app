@@ -8,7 +8,7 @@ public enum Rota {
     USUARIO_LOGIN("/usuarios/login"),
     AREAS("/areas"),
     SEGMENTOS("/segmentos"),
-    SEGMENTOS_POR_AREA("/segmento/area/%s");
+    SEGMENTOS_POR_AREA("/segmentos/area/%s");
 
     private final String rota;
 
