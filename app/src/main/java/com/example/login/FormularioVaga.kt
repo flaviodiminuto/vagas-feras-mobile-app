@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.login.adapter.SkillAdapter
 import com.google.gson.Gson
 import contratos.Inscrito
 import model.*
@@ -21,6 +24,9 @@ class FormularioVaga : AppCompatActivity(){
     lateinit var areaSelecionada: Area
     lateinit var nivelSelecionado: Nivel
     lateinit var segmentoSelecionado: Segmento
+
+    var skillsRequeridasSelecionadas: List<Skill> = mutableListOf()
+    var skillsDesejadasSelecionadas: List<Skill> = mutableListOf()
     var skillsRequeridasList: List<Skill> = mutableListOf()
     var skillsDesejadasList: List<Skill> = mutableListOf()
 
@@ -30,8 +36,20 @@ class FormularioVaga : AppCompatActivity(){
     lateinit var spinnerNivel: Spinner
     lateinit var skillRequeridaAutoComplete: AutoCompleteTextView
     lateinit var skillDesejadaAutoComplete: AutoCompleteTextView
+    lateinit var btnAdicionarSkillRequerida: AppCompatButton
+    lateinit var btnAdicionarSkillDesejada: AppCompatButton
     lateinit var skillRequeridaRecycler: RecyclerView //todo - configurar preenchimento
     lateinit var skillDesejadaRecycler: RecyclerView //todo - configurar preenchimento
+    lateinit var adapterSkillsRequeridas: SkillAdapter
+    lateinit var adapterSkillsDesejadas: SkillAdapter
+
+
+
+    var stringListExemplo = mutableListOf<String>("Java", "Spring boot", "Angular", "Reacte", "Reactive Native",
+    "Java EE", "Java SE")
+    var skillListExemplo = mutableListOf(Skill(1, "Primeira"),
+    Skill(2, "Segunda"),
+    Skill(3, "Terceira"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,15 +59,28 @@ class FormularioVaga : AppCompatActivity(){
         spinnerNivel = findViewById(R.id.form_spn_experiencia)
         skillRequeridaAutoComplete = findViewById(R.id.form_edt_skill_requerida)
         skillDesejadaAutoComplete = findViewById(R.id.form_edt_skill_desejada)
+        btnAdicionarSkillRequerida = findViewById(R.id.form_vaga_btn_adicionar_skl_requerida)
+        btnAdicionarSkillDesejada = findViewById(R.id.form_vaga_btn_adicionar_skl_desejavel)
+        skillRequeridaRecycler  = findViewById(R.id.frm_recycler_skills_requeridas)
+        skillDesejadaRecycler  = findViewById(R.id.frm_recycler_skills_desejadas)
 
-        areaSelecionada = Area(0, "Carregando", "")
-        nivelSelecionado = Nivel(0, "Estagio")
-        segmentoSelecionado = Segmento(0, areaSelecionada, "Carregando", "")
+        areaSelecionada = Area(1, "Clique Aqui", "")
+        nivelSelecionado = Nivel(1, "Estagio")
+        segmentoSelecionado = Segmento(1, areaSelecionada, "Clique aqui", "")
 
+//        adapterSkillsRequeridas = SkillAdapter(skillListExemplo)
+//        adapterSkillsDesejadas = SkillAdapter(skillListExemplo)
+        adapterSkillsRequeridas = SkillAdapter(skillsRequeridasSelecionadas)
+        adapterSkillsDesejadas = SkillAdapter(skillsDesejadasSelecionadas)
+        skillRequeridaRecycler.adapter = adapterSkillsRequeridas
+        skillRequeridaRecycler.layoutManager = LinearLayoutManager(this)
+        skillDesejadaRecycler.adapter = adapterSkillsDesejadas
+        skillDesejadaRecycler.layoutManager = LinearLayoutManager(this)
 
         this.areaService = AreaService(this)
 
         //todo - o id da vaga seja null
+        // isso caracteriza o carregamento da tela para edicao e nao pesquisa
         if(true) {
             prepararParaDivulgar()
             vaga = Vaga.Builder()
@@ -80,9 +111,25 @@ class FormularioVaga : AppCompatActivity(){
         areaHandler.setSegmentoHadler(segmentoHandler)
 
         val nivelHandler = NivelHandler(spinnerNivel, this.nivelSelecionado,this)
-        val skillRequeridaHandler = SkillHandler(skillsRequeridasList, skillRequeridaAutoComplete, this)
-        val skillDesejadaHandler = SkillHandler(skillsDesejadasList, skillDesejadaAutoComplete, this)
+        val skillRequeridaHandler = SkillHandler(skillsRequeridasList,
+                this.skillsRequeridasSelecionadas,
+                skillRequeridaAutoComplete,
+                this)
+        val skillDesejadaHandler = SkillHandler(skillsDesejadasList,
+                this.skillsDesejadasSelecionadas,
+                skillDesejadaAutoComplete,
+                this)
 
+        btnAdicionarSkillRequerida.setOnClickListener {
+            skillsRequeridasSelecionadas = skillRequeridaHandler.adicionarSkill()
+            adapterSkillsRequeridas.update(skillsRequeridasSelecionadas)
+            Toast.makeText(this, skillsRequeridasSelecionadas.toString(), Toast.LENGTH_SHORT).show()
+        }
+        btnAdicionarSkillDesejada.setOnClickListener {
+            skillsDesejadasSelecionadas = skillDesejadaHandler.adicionarSkill()
+            adapterSkillsDesejadas.update(skillsDesejadasSelecionadas)
+            Toast.makeText(this, skillsDesejadasSelecionadas.toString(), Toast.LENGTH_SHORT).show()
+        }
 
     }
 
@@ -151,9 +198,6 @@ class FormularioVaga : AppCompatActivity(){
             areasList = list
             areasNomes = array
             setAreaAdapter()
-            // TODO("Not yet implemented")
-            //  Ao receber a areas
-            //  - carregar a lista segmentos com os segmentos da area selecionada
         }
 
         fun setSegmentoHadler(segmentoHandler: SegmentoHandler) {
@@ -210,8 +254,9 @@ class FormularioVaga : AppCompatActivity(){
     }
 
     class SkillHandler(private var skillList: List<Skill>,
+                       private var skillsSelecionadasList: List<Skill>,
                        private var autoCompleteTextView: AutoCompleteTextView,
-                       private var context: Context): Inscrito {
+                       private var context: Context): Inscrito{
         var skillStringList : List<String> = mutableListOf()
         val skillService = SkillService(context)
 
@@ -235,11 +280,14 @@ class FormularioVaga : AppCompatActivity(){
             setAdapter()
         }
 
-        fun adicionarSkill() {
+        fun adicionarSkill(): List<Skill> {
             val skillSelecionada = skillService.byName(skillList, autoCompleteTextView.text.toString())
             if(skillSelecionada != null){
-                //todo - Adicionar a skill selecionada na vaga
+                val set = skillsSelecionadasList.toHashSet()
+                set.add(skillSelecionada)
+                skillsSelecionadasList = set.toList()
             }
+            return skillsSelecionadasList
         }
     }
 }

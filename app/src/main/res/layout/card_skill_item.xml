@@ -6,16 +6,18 @@
     android:layout_height="wrap_content"
     android:minHeight="30dp"
     android:background="@drawable/item_card_escuro_borda"
-    android:layout_margin="5dp">
+    android:layout_margin="10dp"
+    android:paddingTop="5dp">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txt_skill_iitem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="11dp"
-        android:text="Skill"
         android:textAlignment="center"
+
         android:textColor="@color/card_titulo"
+        android:text="SKILL"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
