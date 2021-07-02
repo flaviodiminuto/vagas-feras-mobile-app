@@ -142,7 +142,6 @@ class FormularioVaga : AppCompatActivity(), Inscrito{
                     .desejaveis(skillsDesejadasSelecionadas)
                     .build()
             val vagaService = VagaService(this)
-            println(Gson().toJson(vaga))
             vagaService.save(this, vaga)
         }
     }

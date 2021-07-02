@@ -70,7 +70,7 @@
             android:id="@+id/txt_divulgar_vaga"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
             android:text="Divulgar Vaga"
             android:textAlignment="center"
             android:textColor="@color/card_titulo"
@@ -79,8 +79,8 @@
 
     <ScrollView
         android:layout_width="375dp"
-        android:layout_height="601dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
         android:minHeight="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,6 +94,7 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/painel_vagas_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

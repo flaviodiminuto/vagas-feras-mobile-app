@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="200dp"
-    android:background="@drawable/dark_card_drawable">
+    android:background="@drawable/dark_card_drawable"
+    android:layout_marginTop="10dp">
 
     <TextView
         android:id="@+id/card_vaga_titulo"
