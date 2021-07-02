@@ -1,6 +1,7 @@
 package com.example.login
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -17,8 +18,10 @@ import model.*
 import service.AreaService
 import service.SegmentoService
 import service.SkillService
+import service.VagaService
+import java.lang.Exception
 
-class FormularioVaga : AppCompatActivity(){
+class FormularioVaga : AppCompatActivity(), Inscrito{
     //Services
     private lateinit var areaService: AreaService
 
@@ -48,14 +51,6 @@ class FormularioVaga : AppCompatActivity(){
     lateinit var adapterSkillsRequeridas: SkillAdapter
     lateinit var adapterSkillsDesejadas: SkillAdapter
     lateinit var btnAcao: AppCompatButton
-
-
-
-    var stringListExemplo = mutableListOf<String>("Java", "Spring boot", "Angular", "Reacte", "Reactive Native",
-    "Java EE", "Java SE")
-    var skillListExemplo = mutableListOf(Skill(1, "Primeira"),
-    Skill(2, "Segunda"),
-    Skill(3, "Terceira"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,17 +120,15 @@ class FormularioVaga : AppCompatActivity(){
         btnAdicionarSkillRequerida.setOnClickListener {
             skillsRequeridasSelecionadas = skillRequeridaHandler.adicionarSkill()
             adapterSkillsRequeridas.update(skillsRequeridasSelecionadas)
-            Toast.makeText(this, skillsRequeridasSelecionadas.toString(), Toast.LENGTH_SHORT).show()
         }
         btnAdicionarSkillDesejada.setOnClickListener {
             skillsDesejadasSelecionadas = skillDesejadaHandler.adicionarSkill()
             adapterSkillsDesejadas.update(skillsDesejadasSelecionadas)
-            Toast.makeText(this, skillsDesejadasSelecionadas.toString(), Toast.LENGTH_SHORT).show()
         }
         btnAcao.setOnClickListener{
-            var area = areaHandler.areaSelecionada()
-            var segmento = segmentoHandler.segmentoSelecionado()
-            var nivel = nivelHandler.nivelSelecionado()
+            val area = areaHandler.areaSelecionada()
+            val segmento = segmentoHandler.segmentoSelecionado()
+            val nivel = nivelHandler.nivelSelecionado()
             segmentoSelecionado.area = area
             vaga = Vaga.Builder()
                     .titulo(txt_titulo.text.toString())
@@ -143,13 +136,14 @@ class FormularioVaga : AppCompatActivity(){
                     .area(area)
                     .segmento(segmento)
                     .nivel(nivel)
-                    .remuneracao_minima(txtRemuneracaoMinima.text.toString().toDoubleOrNull())
-                    .remumeracao_maxima(txtRemuneracaoMaxima.text.toString().toDoubleOrNull())
+                    .remuneracao_minima(("0"+txtRemuneracaoMinima.text.toString()).toDouble())
+                    .remumeracao_maxima(("0"+txtRemuneracaoMaxima.text.toString()).toDouble())
                     .requisitos(skillsRequeridasSelecionadas)
                     .desejaveis(skillsDesejadasSelecionadas)
                     .build()
-            val texto: String = Gson().toJson(vaga)
-            toast(texto)
+            val vagaService = VagaService(this)
+            println(Gson().toJson(vaga))
+            vagaService.save(this, vaga)
         }
     }
 
@@ -321,8 +315,22 @@ class FormularioVaga : AppCompatActivity(){
                 val set = skillsSelecionadasList.toHashSet()
                 set.add(skillSelecionada)
                 skillsSelecionadasList = set.toList()
+            }else{
+                Toast.makeText(context, "Tente selecionar uma skill da lista", Toast.LENGTH_LONG).show()
             }
             return skillsSelecionadasList
+        }
+    }
+
+    override fun evento(response: String?) {
+        try{
+            var vaga = Gson().fromJson<Vaga>(response, Vaga::class.java)
+            if(vaga.id == null) throw Exception(response)
+
+            toast("Vaga cadastrada\n"+vaga.titulo)
+            startActivity(Intent(this, PainelVagas::class.java))
+        }catch (ex: Exception){
+            Toast.makeText(this, response, Toast.LENGTH_LONG).show()
         }
     }
 }

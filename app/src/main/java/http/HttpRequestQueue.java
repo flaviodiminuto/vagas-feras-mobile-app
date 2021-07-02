@@ -10,6 +10,12 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -32,8 +38,18 @@ public class HttpRequestQueue {
         RequestQueue queue = Volley.newRequestQueue(request.getContext());
         StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,
                 request.getUri(), request::finish,
-                Throwable::printStackTrace)
-        {
+                error -> {
+                String response = new String(error.networkResponse.data,StandardCharsets.UTF_8);
+                    try {
+                        String body= new JSONObject(response)
+                                .getJSONObject("data")
+                                .get("causa")
+                                .toString();
+                        request.finish(body);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }) {
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=UTF-8";
@@ -45,6 +61,7 @@ public class HttpRequestQueue {
                 body = request.requestBody();
                 return body == null ? null : body.getBytes(StandardCharsets.UTF_8);
             }
+
 
         };
         queue.add(stringRequest);
