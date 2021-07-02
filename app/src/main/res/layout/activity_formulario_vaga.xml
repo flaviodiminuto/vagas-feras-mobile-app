@@ -47,6 +47,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
+
+            <TextView
+                android:id="@+id/form_txt_titulo_vaga"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textColor="@color/card_titulo"
+                android:textStyle="bold"
+                android:text="Remuneração máxima (R$)" />
+
+            <EditText
+                android:id="@+id/form_edt_titulo_vaga"
+                style="@style/edittext_padrao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                android:hint="Titulo da vaga"
+                />
+
             <TextView
                 android:id="@+id/form_txt_descricao"
                 android:layout_marginTop="15dp"
@@ -58,7 +79,7 @@
                 android:text="Descrição" />
 
             <EditText
-                android:id="@+id/editTextTextMultiLine"
+                android:id="@+id/form_edt_descricao"
                 style="@style/edittext_padrao"
                 android:layout_width="match_parent"
                 android:layout_height="127dp"

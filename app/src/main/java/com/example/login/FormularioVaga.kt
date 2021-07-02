@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.login.adapter.SkillAdapter
@@ -30,10 +32,13 @@ class FormularioVaga : AppCompatActivity(){
     var skillsRequeridasList: List<Skill> = mutableListOf()
     var skillsDesejadasList: List<Skill> = mutableListOf()
 
-    lateinit var txt_descricao: EditText
+    lateinit var txt_titulo: EditText
+    lateinit var txt_descricao: AppCompatEditText
     lateinit var spinnerArea: Spinner
     lateinit var spinnerSegmento: Spinner
     lateinit var spinnerNivel: Spinner
+    lateinit var txtRemuneracaoMinima: EditText
+    lateinit var txtRemuneracaoMaxima: EditText
     lateinit var skillRequeridaAutoComplete: AutoCompleteTextView
     lateinit var skillDesejadaAutoComplete: AutoCompleteTextView
     lateinit var btnAdicionarSkillRequerida: AppCompatButton
@@ -42,6 +47,7 @@ class FormularioVaga : AppCompatActivity(){
     lateinit var skillDesejadaRecycler: RecyclerView //todo - configurar preenchimento
     lateinit var adapterSkillsRequeridas: SkillAdapter
     lateinit var adapterSkillsDesejadas: SkillAdapter
+    lateinit var btnAcao: AppCompatButton
 
 
 
@@ -54,22 +60,25 @@ class FormularioVaga : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_formulario_vaga)
+        txt_titulo = findViewById(R.id.form_edt_titulo_vaga)
+        txt_descricao = findViewById(R.id.form_edt_descricao)
         spinnerArea = findViewById(R.id.form_vaga_spinner_area)
         spinnerSegmento = findViewById(R.id.form_vaga_spinner_segmento)
         spinnerNivel = findViewById(R.id.form_spn_experiencia)
+        txtRemuneracaoMinima = findViewById(R.id.form_edt_remuneracao_minima)
+        txtRemuneracaoMaxima = findViewById(R.id.form_edt_remuneracao_maxima)
         skillRequeridaAutoComplete = findViewById(R.id.form_edt_skill_requerida)
         skillDesejadaAutoComplete = findViewById(R.id.form_edt_skill_desejada)
         btnAdicionarSkillRequerida = findViewById(R.id.form_vaga_btn_adicionar_skl_requerida)
         btnAdicionarSkillDesejada = findViewById(R.id.form_vaga_btn_adicionar_skl_desejavel)
         skillRequeridaRecycler  = findViewById(R.id.frm_recycler_skills_requeridas)
         skillDesejadaRecycler  = findViewById(R.id.frm_recycler_skills_desejadas)
+        btnAcao = findViewById(R.id.form_vaga_action_button)
 
-        areaSelecionada = Area(1, "Clique Aqui", "")
+        areaSelecionada = Area(1, "ar", "")
         nivelSelecionado = Nivel(1, "Estagio")
-        segmentoSelecionado = Segmento(1, areaSelecionada, "Clique aqui", "")
+        segmentoSelecionado = Segmento(1, areaSelecionada, "seg", "")
 
-//        adapterSkillsRequeridas = SkillAdapter(skillListExemplo)
-//        adapterSkillsDesejadas = SkillAdapter(skillListExemplo)
         adapterSkillsRequeridas = SkillAdapter(skillsRequeridasSelecionadas)
         adapterSkillsDesejadas = SkillAdapter(skillsDesejadasSelecionadas)
         skillRequeridaRecycler.adapter = adapterSkillsRequeridas
@@ -83,13 +92,6 @@ class FormularioVaga : AppCompatActivity(){
         // isso caracteriza o carregamento da tela para edicao e nao pesquisa
         if(true) {
             prepararParaDivulgar()
-            vaga = Vaga.Builder()
-                    .area(areaSelecionada)
-                    .segmento(segmentoSelecionado)
-                    .nivel(nivelSelecionado)
-                    .desejaveis(skillsRequeridasList)
-                    .desejaveis(skillsDesejadasList)
-                    .build()
         } else {
             prepararParaConsultar()
         }
@@ -130,13 +132,34 @@ class FormularioVaga : AppCompatActivity(){
             adapterSkillsDesejadas.update(skillsDesejadasSelecionadas)
             Toast.makeText(this, skillsDesejadasSelecionadas.toString(), Toast.LENGTH_SHORT).show()
         }
+        btnAcao.setOnClickListener{
+            var area = areaHandler.areaSelecionada()
+            var segmento = segmentoHandler.segmentoSelecionado()
+            var nivel = nivelHandler.nivelSelecionado()
+            segmentoSelecionado.area = area
+            vaga = Vaga.Builder()
+                    .titulo(txt_titulo.text.toString())
+                    .descricao(txt_descricao.text.toString())
+                    .area(area)
+                    .segmento(segmento)
+                    .nivel(nivel)
+                    .remuneracao_minima(txtRemuneracaoMinima.text.toString().toDoubleOrNull())
+                    .remumeracao_maxima(txtRemuneracaoMaxima.text.toString().toDoubleOrNull())
+                    .requisitos(skillsRequeridasSelecionadas)
+                    .desejaveis(skillsDesejadasSelecionadas)
+                    .build()
+            val texto: String = Gson().toJson(vaga)
+            toast(texto)
+        }
+    }
 
+    private fun toast(texto: String) {
+        Toast.makeText(this, texto, Toast.LENGTH_SHORT).show()
     }
 
     class NivelHandler(private var spinnerNivel: Spinner,
                        private var nivelSelecionado: Nivel,
                        private var context: Context): AdapterView.OnItemSelectedListener{
-
         init {
             setNivelAdapter()
         }
@@ -157,8 +180,11 @@ class FormularioVaga : AppCompatActivity(){
         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             nivelSelecionado = Nivel(position.toLong())
         }
-    }
 
+        fun nivelSelecionado(): Nivel {
+            return this.nivelSelecionado
+        }
+    }
 
     class AreaHandler(private var spinnerArea: Spinner,
                       private var areaSelecionada: Area,
@@ -173,7 +199,7 @@ class FormularioVaga : AppCompatActivity(){
             setAreaAdapter()
         }
 
-        fun setAreaAdapter(){
+        private fun setAreaAdapter(){
             ArrayAdapter<String>( context,
                     R.layout.support_simple_spinner_dropdown_item,
                     areasNomes)
@@ -183,26 +209,31 @@ class FormularioVaga : AppCompatActivity(){
                         this.arrayAdapter = arrayAdapter}
             spinnerArea.onItemSelectedListener = this
         }
+
         override fun onNothingSelected(p0: AdapterView<*>?) { }
 
         override fun onItemSelected(item: AdapterView<*>?, view: View?, position: Int, p3: Long) {
-            areaSelecionada = areasList.get(position)
+            areaSelecionada = areasList[position]
             segmentHandler.find(areaSelecionada.id)
         }
+
         override fun evento(response: String?) {
-            var list = Gson().fromJson(response,Array<Area>::class.java).toList()
+            val list = Gson().fromJson(response,Array<Area>::class.java).toList()
             val array = ArrayList<String>()
             for (aera in list){
                 array.add(aera.nome)
             }
             areasList = list
             areasNomes = array
+            if(areasList.isNotEmpty()) areaSelecionada = list[0]
             setAreaAdapter()
         }
 
         fun setSegmentoHadler(segmentoHandler: SegmentoHandler) {
             this.segmentHandler = segmentoHandler
         }
+
+        fun areaSelecionada(): Area { return this.areaSelecionada}
     }
 
     class SegmentoHandler(private var spinnerSegmento: Spinner,
@@ -250,6 +281,10 @@ class FormularioVaga : AppCompatActivity(){
 
         fun find(id: Long) {
             segmentoService.find(this, id)
+        }
+
+        fun segmentoSelecionado(): Segmento {
+            return this.segmentoSelecionado
         }
     }
 
