@@ -39,8 +39,8 @@ public class HttpRequestQueue {
         StringRequest stringRequest = new StringRequest(com.android.volley.Request.Method.POST,
                 request.getUri(), request::finish,
                 error -> {
-                String response = new String(error.networkResponse.data,StandardCharsets.UTF_8);
                     try {
+                        String response = new String(error.networkResponse.data,StandardCharsets.UTF_8);
                         String body= new JSONObject(response)
                                 .getJSONObject("data")
                                 .get("causa")
